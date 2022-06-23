@@ -65,10 +65,10 @@ func main() {
 			}
 			defer conn.Close()
 
-			listen.Close()
 			fmt.Println("[ Silence ] - Connection Established..  CTRL^C TO EXIT")
 			go handleRequest(conn)
 			go sendMessage(conn)
+			listen.Close()
 		}
 	case "c":
 		conn, err := net.Dial("tcp", ip+":"+port)
@@ -89,6 +89,7 @@ func main() {
 
 func sendMessage(conn net.Conn) {
 	var message string
+	fmt.Println(("1"))
 	for i := 0; i != 1; {
 		fmt.Scanln(&message)
 		conn.Write([]byte(message))
