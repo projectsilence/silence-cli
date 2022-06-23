@@ -54,7 +54,7 @@ func main() {
 			log.Fatal(err)
 			os.Exit(1)
 		}
-
+		defer listen.Close()
 		fmt.Println("[ Silence ] - Starting listener on " + ip + ":" + port)
 
 		for {
@@ -68,7 +68,6 @@ func main() {
 			fmt.Println("[ Silence ] - Connection Established..  CTRL^C TO EXIT")
 			go handleRequest(conn)
 			go sendMessage(conn)
-			listen.Close()
 		}
 	case "c":
 		conn, err := net.Dial("tcp", ip+":"+port)
