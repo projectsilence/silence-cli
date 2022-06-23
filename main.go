@@ -54,8 +54,9 @@ func main() {
 			log.Fatal(err)
 			os.Exit(1)
 		}
+		defer listen.Close()
 
-		fmt.Println("Starting listener on " + ip + ":" + port)
+		fmt.Println("[ Silence ] - Starting listener on " + ip + ":" + port)
 
 		for {
 			conn, err := listen.Accept()
@@ -63,7 +64,7 @@ func main() {
 				log.Fatal(err)
 				os.Exit(1)
 			}
-			listen.Close()
+			defer conn.Close()
 			fmt.Println("[ Silence ] - Connection Established..  CTRL^C TO EXIT")
 			go handleRequest(conn)
 			go sendMessage(conn)
