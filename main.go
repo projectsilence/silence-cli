@@ -80,7 +80,8 @@ func main() {
 		go sendMessage(conn)
 
 	default:
-		fmt.Println("Usage: main.go -m (l - listen or c - connect)")
+		fmt.Println("Usage: main.go -m l -ip (IP) -p (port)")
+		fmt.Println("OR     main.go -m c -ip (IP) -p (port)")
 		os.Exit(1)
 	}
 
@@ -88,22 +89,26 @@ func main() {
 
 func sendMessage(conn net.Conn) {
 	var message string
-	fmt.Println(("1"))
-	for i := 0; i != 1; {
-		fmt.Scanln(&message)
+	fmt.Println("1")
+	fmt.Scanln(&message)
+	if message != "test123" {
 		conn.Write([]byte(message))
+	} else {
+		conn.Write([]byte("test123"))
+		os.Exit(1)
 	}
-
 }
 
 func handleRequest(conn net.Conn) {
 	// store incoming data
 	buffer := make([]byte, 1024)
-	for x := 0; x != 0; {
-		message_in, err := conn.Read(buffer)
-		if err != nil {
-			log.Fatal(err)
-		}
-		fmt.Println(string(message_in))
+	fmt.Println("2")
+	message_in, err := conn.Read(buffer)
+	if err != nil {
+		log.Fatal(err)
 	}
+	if string(message_in) == "test123" {
+		os.Exit(1)
+	}
+	fmt.Println(string(message_in))
 }
